@@ -13,7 +13,6 @@ export default class HomeScreen extends React.Component {
     // TODO: put styles in separate file
     // improve the keyboard (currently a separate package)
     // maybe improve the layout of the input box
-
     render() {
         return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 40 }}>
@@ -36,11 +35,16 @@ export default class HomeScreen extends React.Component {
         );
     }
 
-    changeText(newText) {
-        this.setState({text: newText});
+    changeText(input) {
+        this.setState((state) => {
+            return{text: input}
+        });
+        // if(phoneNum.length <= 10){
+        //     this.setState({text: phoneNum});
+        // }
 
         //only allow user to continue
-        //if the size of the string inputted > 0
-        this.setState({disabled: newText.length > 0 ? false : true});
+        //if the size of the string inputted >= 10 (canadian phone number)
+        this.setState({disabled: input.length < 10 ? true : false});
     }
 }
