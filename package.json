@@ -10,12 +10,15 @@
     "react": "16.6.3",
     "react-native": "0.58.4",
     "react-native-gesture-handler": "^1.0.15",
+    "react-native-virtual-keyboard": "^1.0.9",
     "react-navigation": "^3.2.1"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "24.1.0",
     "jest": "24.1.0",
+    "metro": "^0.52.0",
+    "metro-core": "^0.52.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3"
   },
