@@ -42,6 +42,14 @@ export default class HomeScreen extends React.Component {
       return animatedText;
     }
 
+    wait(ms)
+    {
+        var d = new Date();
+        var d2 = null;
+        do { d2 = new Date(); }
+        while(d2-d < ms);
+    }
+
     // TODO: put styles in separate file
     // improve the keyboard (currently a separate package)
     // maybe improve the layout of the input box
@@ -95,14 +103,6 @@ export default class HomeScreen extends React.Component {
                 return{alert: "Invalid phone number. Please try again:"};
             });
         }
-    }
-
-    wait(ms)
-    {
-        var d = new Date();
-        var d2 = null;
-        do { d2 = new Date(); }
-        while(d2-d < ms);
     }
 }
 
