@@ -13,6 +13,7 @@ export default class HomeScreen extends React.Component {
         this.invalid = false;
         this.attempt = '';
         this.correct = '4169381605';
+        this.wait = this.wait.bind(this);
         this.animatedText = this.getAnimatedText.bind(this);
         this.shakeAnimation = new Animated.Value(0);
     }
@@ -39,6 +40,14 @@ export default class HomeScreen extends React.Component {
                 </Animated.Text>    
           )
       return animatedText;
+    }
+
+    wait(ms)
+    {
+        var d = new Date();
+        var d2 = null;
+        do { d2 = new Date(); }
+        while(d2-d < ms);
     }
 
     // TODO: put styles in separate file
@@ -84,13 +93,14 @@ export default class HomeScreen extends React.Component {
             this.setState((state) => {
                 return{alert: "Please enter your phone number: "};
             });
+            // this.wait(2000);
             this.props.navigation.navigate('EnterPassCode');
         }
         else{
             this.setState((state) => {
                 this.invalid = true;
                 this.showErrorAnimation();
-                return{alert: "Invalid. Please try again:"};
+                return{alert: "Invalid phone number. Please try again:"};
             });
         }
     }
@@ -98,12 +108,12 @@ export default class HomeScreen extends React.Component {
 
 //style sheet used in text color change
 const styles = StyleSheet.create({
-            grey: {
-                paddingBottom: 10,
-                color: 'grey'
-            },
-            red: {
-                paddingBottom: 10,
-                color: 'red'
-            },
-        });
+    grey: {
+        paddingBottom: 10,
+        color: 'grey'
+    },
+    red: {
+        paddingBottom: 10,
+        color: 'red'
+    },
+});
