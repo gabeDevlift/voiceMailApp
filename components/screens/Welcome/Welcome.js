@@ -90,7 +90,7 @@ export default class HomeScreen extends React.Component {
             this.setState((state) => {
                 this.invalid = true;
                 this.showErrorAnimation();
-                return{alert: "Invalid. Please try again:"};
+                return{alert: "Invalid phone number. Please try again:"};
             });
         }
     }
@@ -98,12 +98,12 @@ export default class HomeScreen extends React.Component {
 
 //style sheet used in text color change
 const styles = StyleSheet.create({
-            grey: {
-                paddingBottom: 10,
-                color: 'grey'
-            },
-            red: {
-                paddingBottom: 10,
-                color: 'red'
-            },
-        });
+    grey: {
+        paddingBottom: 10,
+        color: 'grey'
+    },
+    red: {
+        paddingBottom: 10,
+        color: 'red'
+    },
+});
