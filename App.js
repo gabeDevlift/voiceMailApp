@@ -12,7 +12,7 @@ const AppNavigator = createStackNavigator(
     Inbox
   },
   {
-    initialRouteName: "Welcome"
+    initialRouteName: "Inbox"
   }
 );
 
