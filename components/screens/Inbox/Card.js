@@ -11,6 +11,7 @@ export default class Inbox extends React.Component {
 		// 	length: '0:20'
 		// }
 		
+		// need a database to create and store card data
 		this.fnames = ['Victor', 'Jerry', 'Jacquelyn', 'Gabe', 'William', 'Justin', 'Fiona', 'Sam', 'Jane', 'Zach', 'Rory', 'Jason', 'Raiya', 'Mila', 'Parker', 'Jordan', 'Michael', 'Aiden'];
 		this.lnames = ['Shi', 'Chen', 'Koh', 'Smith', 'Stevens', 'Lau', 'Adams', 'McCann', 'Lopinski', 'Kwan', 'Khan', 'Lee', 'Yu', 'Lio', 'Park', 'Alfonso'];
 		this.phones = ['(416)-553-3123','(905)-343-3223', '(888)-888-8888','(434)-132-1231', '(903)-434-2323','(232)-232-2323'];
@@ -20,6 +21,7 @@ export default class Inbox extends React.Component {
 	}
 
 	getRandom(){
+		//get random info and make a card instance with it
 		return (
             <View style={{ borderWidth: 1, borderColor: 'black', height: 150, width: '100%' }}>
 	            <Text style={{ textAlign: 'left'}}>

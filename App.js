@@ -14,7 +14,7 @@ const AppNavigator = createStackNavigator(
     Card
   },
   {
-    initialRouteName: "Inbox"
+    initialRouteName: "Welcome"
   }
 );
 
