@@ -39,7 +39,7 @@ export default class EnterPassCode extends Component {
                 <Animated.Text style={[this.invalid ? styles.red : styles.grey, {marginLeft: shake}]}>
                 {this.state.alert}
                 </Animated.Text>    
-          )
+          	)
       return animatedText;
     }
 
