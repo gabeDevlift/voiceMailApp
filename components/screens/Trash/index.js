@@ -9,7 +9,15 @@ const data = cloneDeep(dataFile);
 const styles = cloneDeep(stylesFile);
 
 
-export default class Inbox extends React.Component {
+export default class Trash extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            menuItemsExpanded: new Array(data.dummyData.length).fill(false)
+        }
+    }
+
     render() {
         return (
             <DrawerLayout
@@ -82,11 +90,11 @@ export default class Inbox extends React.Component {
                     </TouchableOpacity>
                     <View style={styles.topHeading.root}>
                         <View style={styles.topHeading.left.root}>
-                            <Image source={require('@images/phone-incoming.png')}
+                            <Image source={require('@images/trash.png')}
                                 style={styles.topHeading.left.phoneImage}
                             />
                             <Text style={styles.topHeading.left.text}>
-                                INBOX
+                                TRASH
                             </Text>
                         </View>
                         <View style={styles.topHeading.right.root}>
@@ -120,34 +128,48 @@ export default class Inbox extends React.Component {
                                             {message.duration}
                                             </Text>
                                         </View>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.state.menuItemsExpanded[index] = !this.state.menuItemsExpanded[index];
+                                                this.setState({
+                                                    menuItemsExpanded: this.state.menuItemsExpanded
+                                                })
+                                            }}
+                                        >
                                             <Image
-                                                source={require('@images/phone-outgoing.png')}
+                                                source={this.state.menuItemsExpanded[index]==true ? require('@images/up-chevron.png') : require('@images/down-chevron.png')}
                                                 style={styles.messages.message.top.right.root}
                                             />
                                         </TouchableOpacity>
                                     </View>
-                                    <View style={styles.messages.message.audioPlayer.root}>
-                                        <View style={styles.messages.message.audioPlayer.line}>
-                                            
+                                    {
+                                        this.state.menuItemsExpanded[index]==true
+                                        ?
+                                        <View style={styles.messages.message.actions.root}>
+                                            <View style={styles.messages.message.actions.innerView.root}>
+                                                <View style={styles.messages.message.actions.innerView.restore.root}>
+                                                    <Image
+                                                        source={require('@images/restore.png')}
+                                                        style={styles.messages.message.actions.innerView.restore.icon}
+                                                    />
+                                                    <Text style={styles.messages.message.actions.innerView.restore.text}>
+                                                        Restore
+                                                    </Text>
+                                                </View>
+                                                <View style={styles.messages.message.actions.innerView.delete.root}>
+                                                    <Image
+                                                        source={require('@images/trash.png')}
+                                                        style={styles.messages.message.actions.innerView.delete.icon}
+                                                    />
+                                                    <Text style={styles.messages.message.actions.innerView.delete.text}>
+                                                        Delete Forever
+                                                    </Text>
+                                                </View>
+                                            </View>
                                         </View>
-                                        <View style={styles.messages.message.audioPlayer.clock.root}>
-                                            <Text style={styles.messages.message.audioPlayer.clock.timeElapsed}>
-                                                {"0:10"}
-                                            </Text>
-                                            <Text style={styles.messages.message.audioPlayer.clock.timeLeft}>
-                                                {"1:10"}
-                                            </Text>
-                                        </View>
-                                        <View style={styles.messages.message.audioPlayer.playButton.root}>
-                                            <TouchableOpacity>
-                                                <Image
-                                                    source={require('@images/play-icon.png')}
-                                                    style={styles.messages.message.audioPlayer.playButton.icon}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
+                                        :
+                                        null
+                                    }
                                 </View>
                             ))}
                         </View>

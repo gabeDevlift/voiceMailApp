@@ -4,12 +4,14 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Welcome from '@screens/Welcome/Welcome';
 import EnterPassCode from '@screens/EnterPassCode/EnterPassCode';
 import Inbox from '@screens/Inbox/index';
+import Trash from '@screens/Trash/index';
 
 const AppNavigator = createStackNavigator(
   {
     Welcome,
     EnterPassCode,
-    Inbox
+    Inbox,
+    Trash
   },
   {
     initialRouteName: "Inbox"

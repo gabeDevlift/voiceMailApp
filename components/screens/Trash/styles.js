@@ -119,44 +119,48 @@ export default {
                 },
                 right: {
                     root: {
-                        width: 20,
-                        height: 20
+                        width: 15,
+                        height: 15
                     }
                 }
             },
-            audioPlayer: {
+            actions: {
                 root: {
-
+                    paddingLeft: 40,
+                    paddingTop: 20,
+                    paddingRight: 40,
+                    paddingBottom: 10
                 },
-                line: {
-                    marginTop: 15,
-                    marginBottom: 5,
-                    borderBottomWidth: 3,
-                    borderBottomColor: globalStyles.grey
-                },
-                clock: {
+                innerView: {
                     root: {
                         flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        justifyContent: 'space-between'
                     },
-                    timeElapsed: {
-                        fontSize: 10,
-                        color: globalStyles.grey
-                        
+                    restore: {
+                        root: {
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        },
+                        icon: {
+                            width: 20,
+                            height: 20
+                        },
+                        text: {
+                            marginLeft: 5
+                        }
                     },
-                    timeLeft: {
-                        fontSize: 10,
-                        color: globalStyles.grey
-
-                    }
-                },
-                playButton: {
-                    root: {
-                        alignItems: 'center'
-                    },
-                    icon: {
-                        width: 20,
-                        height: 20
+                    delete: {
+                        root: {
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        },
+                        icon: {
+                            width: 20,
+                            height: 20
+                        },
+                        text: {
+                            marginLeft: 5
+                        }
                     }
                 }
             }
