@@ -12,7 +12,7 @@ export default class HomeScreen extends React.Component {
         };
         this.invalid = false;
         this.attempt = '';
-        this.correct = '4169381605';
+        this.correct = '(416) 938-1605';
         this.wait = this.wait.bind(this);
         this.animatedText = this.getAnimatedText.bind(this);
         this.shakeAnimation = new Animated.Value(0);
@@ -77,13 +77,20 @@ export default class HomeScreen extends React.Component {
 
     //handler for keyboard input
     handleInput(input) {
+        if(input.length < 11 && input.length != 0){
+            var first3 = input.slice(0,3);
+            var next3 = input.slice(3,6);
+            var last4 = input.slice(6,10)
+            input = '(' + first3 + ')' + ' ' + next3 + '-' + last4;
+        }
+
         this.setState((state) => {
             this.attempt = input;
             return{text: input};
         });
         //only allow user to continue
         //if the size of the string inputted >= 10 (canadian phone number)
-        this.setState({disabled: input.length < 10 ? true : false});
+        this.setState({disabled: input.length < 14 ? true : false});
     }
 
     //function for "hacky" authentication
