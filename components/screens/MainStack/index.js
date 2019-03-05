@@ -9,24 +9,23 @@ import DrawerLayout from 'react-native-drawer-layout';
 
 
 const styles = cloneDeep(stylesFile);
+const StackNavigator = createStackNavigator({
+        Inbox: {
+            screen: Inbox,
+        },
+        Trash: {
+            screen: Trash
+        }
+    },
+    {
+        headerMode: 'none',
+        initialRouteName: 'Inbox'
+    }
+);
+const AppContainer = createAppContainer(StackNavigator)
 
 class MainStack extends Component {
     render() {
-        const StackNavigator = createStackNavigator({
-                Inbox: {
-                    screen: Inbox,
-                },
-                Trash: {
-                    screen: Trash
-                }
-            },
-            {
-            headerMode: 'none',
-            initialRouteName: this.props.user ? 'TabNavigator' : 'Intro',
-            // initialRouteName: 'Contact',
-            }
-        );
-        const AppContainer = createAppContainer(StackNavigator)
         return(
             <DrawerLayout
                 ref={drawerLayout => {
@@ -45,7 +44,10 @@ class MainStack extends Component {
                             </Text>
                         </View>
                         <View style={styles.drawerMenu.menuItems.root}>
-                            <TouchableOpacity style={styles.drawerMenu.menuItems.menuItem.root}>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('Inbox')}
+                                style={styles.drawerMenu.menuItems.menuItem.root}
+                            >
                                 <Image
                                     source={require('@images/phone-incoming.png')}
                                     style={styles.drawerMenu.menuItems.menuItem.icon}
@@ -72,7 +74,10 @@ class MainStack extends Component {
                                     ARCHIVE
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.drawerMenu.menuItems.menuItem.root}>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('Trash')}
+                                style={styles.drawerMenu.menuItems.menuItem.root}
+                            >
                                 <Image
                                     source={require('@images/trash.png')}
                                     style={styles.drawerMenu.menuItems.menuItem.icon}
@@ -86,7 +91,7 @@ class MainStack extends Component {
                     </View>
                 )}
                 >
-                {AppContainer}
+                <AppContainer/>
             </DrawerLayout>
         )
     }

@@ -11,12 +11,12 @@ const AppNavigator = createStackNavigator(
   {
     Welcome,
     EnterPassCode,
-    // MainStack,
+    MainStack,
     Inbox,
     Trash
   },
   {
-    initialRouteName: "Welcome"
+    initialRouteName: "MainStack"
   }
 );
 
