@@ -11,13 +11,6 @@ const styles = cloneDeep(stylesFile);
 
 export default class Trash extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            menuItemsExpanded: new Array(data.dummyData.length).fill(false)
-        }
-    }
-
     render() {
         return (
             <DrawerLayout
@@ -37,7 +30,12 @@ export default class Trash extends React.Component {
                             </Text>
                         </View>
                         <View style={styles.drawerMenu.menuItems.root}>
-                            <TouchableOpacity style={styles.drawerMenu.menuItems.menuItem.root}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    this.props.navigation.navigate('Inbox')}
+                                }
+                                style={styles.drawerMenu.menuItems.menuItem.root}
+                            >
                                 <Image
                                     source={require('@images/phone-incoming.png')}
                                     style={styles.drawerMenu.menuItems.menuItem.icon}

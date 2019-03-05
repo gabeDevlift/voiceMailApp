@@ -10,6 +10,7 @@ const styles = cloneDeep(stylesFile);
 
 
 export default class Inbox extends React.Component {
+
     render() {
         return (
             <DrawerLayout
@@ -56,7 +57,10 @@ export default class Inbox extends React.Component {
                                     ARCHIVE
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.drawerMenu.menuItems.menuItem.root}>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('Trash')}
+                                style={styles.drawerMenu.menuItems.menuItem.root}
+                            >
                                 <Image
                                     source={require('@images/trash.png')}
                                     style={styles.drawerMenu.menuItems.menuItem.icon}
