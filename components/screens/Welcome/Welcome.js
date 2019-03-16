@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native';
 import VirtualKeyboard from 'react-native-virtual-keyboard';
+import TextInputMask from '@reusables/react-native-text-input-mask';
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -12,7 +13,7 @@ export default class HomeScreen extends React.Component {
         };
         this.invalid = false;
         this.attempt = '';
-        this.correct = '(416) 938-1605';
+        this.correct = '4169381605';
         this.wait = this.wait.bind(this);
         this.animatedText = this.getAnimatedText.bind(this);
         this.shakeAnimation = new Animated.Value(0);
@@ -50,6 +51,14 @@ export default class HomeScreen extends React.Component {
         while(d2-d < ms);
     }
 
+    componentDidUpdate = () => {
+        console.log("hello")
+    }
+
+    setValue = () => {
+        console.log(this.input)
+    }
+
     // TODO: put styles in separate file
     // improve the keyboard (currently a separate package)
     // maybe improve the layout of the input box
@@ -59,6 +68,9 @@ export default class HomeScreen extends React.Component {
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 40 }}>
             <Text style={{paddingBottom: 20, fontSize: 26}}>Welcome Back.</Text>
             {this.getAnimatedText()}
+            {/* <TouchableOpacity style={{width: 100, height: 100, borderWidth: 1, borderColor: 'red'}}
+                onPress={() => this.input.setValue()}
+            ></TouchableOpacity> */}
             <View style={{flexDirection:"row", height: 40, width: 250, borderRadius:20, borderColor: 'grey', borderWidth: 1}}>
                 <Text style={{height: 40, width: 50, lineHeight: 38, textAlign: "center"}}>
                     +1  |
@@ -66,6 +78,17 @@ export default class HomeScreen extends React.Component {
 	        	<Text style={{height: 40, width: 180, textAlign: "left", lineHeight: 38}}>
                     {this.state.text}
                 </Text>
+                {/* <TextInputMask
+                    ref={ref => ( this.input = ref )}
+                    style={{borderWidth: 1, borderColor: 'red', width: '100%'}}
+                    onChangeText={(formatted, extracted) => {
+                        console.log("hello")
+                        console.log(this.input)
+                        console.log(formatted) // +1 (123) 456-78-90
+                        console.log(extracted) // 1234567890
+                    }}
+                    mask={"+1 ([000]) [000] [00] [00]"}
+                /> */}
 	        </View>
             <VirtualKeyboard color='grey' pressMode='string' onPress={(val) => this.handleInput(val)}/>
             <View style={{paddingTop: 30}}> 
@@ -77,20 +100,13 @@ export default class HomeScreen extends React.Component {
 
     //handler for keyboard input
     handleInput(input) {
-        if(input.length < 11 && input.length != 0){
-            var first3 = input.slice(0,3);
-            var next3 = input.slice(3,6);
-            var last4 = input.slice(6,10)
-            input = '(' + first3 + ')' + ' ' + next3 + '-' + last4;
-        }
-
         this.setState((state) => {
             this.attempt = input;
             return{text: input};
         });
         //only allow user to continue
         //if the size of the string inputted >= 10 (canadian phone number)
-        this.setState({disabled: input.length < 14 ? true : false});
+        this.setState({disabled: input.length < 10 ? true : false});
     }
 
     //function for "hacky" authentication
