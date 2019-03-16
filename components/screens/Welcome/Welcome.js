@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native';
 import VirtualKeyboard from 'react-native-virtual-keyboard';
 import TextInputMask from '@reusables/react-native-text-input-mask';
+import SplashScreen from 'react-native-splash-screen'
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
@@ -51,8 +52,8 @@ export default class HomeScreen extends React.Component {
         while(d2-d < ms);
     }
 
-    componentDidUpdate = () => {
-        console.log("hello")
+    componentDidMount() {
+        SplashScreen.hide();
     }
 
     setValue = () => {
