@@ -13,7 +13,6 @@
     "react-native-drawer-layout": "^2.0.0",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-splash-screen": "^3.2.0",
-    "react-native-text-input-mask": "^0.8.0",
     "react-native-virtual-keyboard": "^1.0.9",
     "react-navigation": "^3.2.1"
   },

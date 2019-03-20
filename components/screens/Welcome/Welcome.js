@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native';
 import VirtualKeyboard from 'react-native-virtual-keyboard';
-import TextInputMask from '@reusables/react-native-text-input-mask';
 import SplashScreen from 'react-native-splash-screen'
 
 export default class HomeScreen extends React.Component {
@@ -12,6 +11,7 @@ export default class HomeScreen extends React.Component {
             alert: "Please enter your phone number: ",
             disabled: true
         };
+        this.input = '';
         this.invalid = false;
         this.attempt = '';
         this.correct = '4169381605';
@@ -56,6 +56,10 @@ export default class HomeScreen extends React.Component {
         SplashScreen.hide();
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        
+    }
+
     setValue = () => {
         console.log(this.input)
     }
@@ -69,27 +73,10 @@ export default class HomeScreen extends React.Component {
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 40 }}>
             <Text style={{paddingBottom: 20, fontSize: 26}}>Welcome Back.</Text>
             {this.getAnimatedText()}
-            {/* <TouchableOpacity style={{width: 100, height: 100, borderWidth: 1, borderColor: 'red'}}
-                onPress={() => this.input.setValue()}
-            ></TouchableOpacity> */}
-            <View style={{flexDirection:"row", height: 40, width: 250, borderRadius:20, borderColor: 'grey', borderWidth: 1}}>
-                <Text style={{height: 40, width: 50, lineHeight: 38, textAlign: "center"}}>
-                    +1  |
-                </Text>
+            <View style={{flexDirection:"row", height: 40, width: 250, borderRadius:20, borderColor: 'grey', borderWidth: 1, paddingLeft: 10}}>
 	        	<Text style={{height: 40, width: 180, textAlign: "left", lineHeight: 38}}>
                     {this.state.text}
                 </Text>
-                {/* <TextInputMask
-                    ref={ref => ( this.input = ref )}
-                    style={{borderWidth: 1, borderColor: 'red', width: '100%'}}
-                    onChangeText={(formatted, extracted) => {
-                        console.log("hello")
-                        console.log(this.input)
-                        console.log(formatted) // +1 (123) 456-78-90
-                        console.log(extracted) // 1234567890
-                    }}
-                    mask={"+1 ([000]) [000] [00] [00]"}
-                /> */}
 	        </View>
             <VirtualKeyboard color='grey' pressMode='string' onPress={(val) => this.handleInput(val)}/>
             <View style={{paddingTop: 30}}> 
@@ -101,13 +88,40 @@ export default class HomeScreen extends React.Component {
 
     //handler for keyboard input
     handleInput(input) {
+        if (input.length < this.input.length) {
+            this.attempt = this.attempt.substring(0, this.attempt.length-1)
+        } else {
+            if (this.attempt.length < 10)
+                this.attempt += input.charAt(input.length-1)
+        }
+        this.input = input;
+        
         this.setState((state) => {
-            this.attempt = input;
-            return{text: input};
+            if (this.attempt.length > 0) {
+                if (this.attempt.length < 4) {
+                    return {
+                        text: '+1 ('+this.attempt+')'
+                    }
+                } else {
+                    if (this.attempt.length < 7) {
+                        return {
+                            text: '+1 ('+this.attempt.substring(0, 3)+') '+this.attempt.substring(3)
+                        }
+                    } else {
+                        return {
+                            text: '+1 ('+this.attempt.substring(0, 3)+') '+this.attempt.substring(3, 6)+'-'+this.attempt.substring(6)
+                        }
+                    }
+                }
+            } else {
+                return {
+                    text: this.attempt
+                }
+            }
         });
         //only allow user to continue
         //if the size of the string inputted >= 10 (canadian phone number)
-        this.setState({disabled: input.length < 10 ? true : false});
+        this.setState({disabled: this.attempt.length < 10 ? true : false});
     }
 
     //function for "hacky" authentication
