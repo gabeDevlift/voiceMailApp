@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Animated, Easing, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Animated, Easing, TouchableOpacity, Image } from 'react-native';
 import VirtualKeyboard from 'react-native-virtual-keyboard';
 import SplashScreen from 'react-native-splash-screen'
 
@@ -53,7 +53,7 @@ export default class HomeScreen extends React.Component {
     }
 
     componentDidMount() {
-        SplashScreen.hide();
+        // SplashScreen.hide();
     }
 
     componentDidUpdate(prevProps, prevState) {
