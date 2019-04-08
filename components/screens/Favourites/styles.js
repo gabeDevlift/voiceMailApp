@@ -101,12 +101,18 @@ export default {
             margin: 5
         },
         message: {
-            root: {
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+            container: {
+                marginTop: 5,
                 padding: 10,
                 borderWidth: 1,
                 borderColor: globalStyles.grey
+            },
+            root: {
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            },
+            root2: {
+
             },
             left: {
                 root: {
@@ -175,6 +181,15 @@ export default {
                     }
                 }
             }
+        }
+    },
+    bottomSection: {
+        root: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 5,
+            width: '100%',
+            height: 30,
         }
     }
 }
