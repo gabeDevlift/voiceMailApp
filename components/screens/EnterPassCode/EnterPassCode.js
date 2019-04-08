@@ -7,7 +7,8 @@ export default class EnterPassCode extends Component {
     	this.state = { 
     		text: '',
     		alert: 'Please enter your password:',
-    		placemessage: 'Enter password...'
+            placemessage: 'Enter password...',
+            disabled: true
     	};
     	this.forgotPass = this.forgotPass.bind(this);
     	this.change = this.change.bind(this);
@@ -43,6 +44,17 @@ export default class EnterPassCode extends Component {
       return animatedText;
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.text !== this.state.text) {
+
+            if (this.state.text.length > 5){
+                this.setState({
+                    disabled: false
+                })
+            }
+        }
+    }
+
     //maybe there's a way to clean up the tags?
     render() {
         return (
@@ -50,7 +62,7 @@ export default class EnterPassCode extends Component {
             {this.getAnimatedText()}
             <TextInput
             	ref={input => { this.passInput = input }}
-        		style={{height: 40, width: 250, borderColor: 'gray', borderWidth: 1, borderRadius: 25}}
+        		style={{height: 40, width: 250, borderColor: 'gray', borderWidth: 1, borderRadius: 25, paddingLeft: 10}}
         		onChangeText={(text) => this.change(text)}
         		placeholder={this.state.placemessage}
         		secureTextEntry={true}
@@ -67,7 +79,9 @@ export default class EnterPassCode extends Component {
       		<Button style={{paddingTop: 30 }}
       			title='Forgot password?'
       			onPress={() => this.forgotPass()}>
-      		</Button>
+      		</Button><View style={{paddingTop: 30}}> 
+                <Button title="Continue" disabled={this.state.disabled} onPress={() => this.props.navigation.navigate('MainStack')}/>
+            </View>
         </View>
         );
     }
@@ -121,7 +135,7 @@ export default class EnterPassCode extends Component {
                 };
             });
             this.passInput.clear();
-            this.props.navigation.navigate('Inbox');
+            this.props.navigation.navigate('MainStack');
 
     	}
     	else

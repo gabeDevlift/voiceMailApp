@@ -102,6 +102,8 @@ export default {
         },
         message: {
             root: {
+                marginTop: 5,
+                marginBottom: 5,
                 padding: 10,
                 borderWidth: 1,
                 borderColor: globalStyles.grey
@@ -114,7 +116,7 @@ export default {
                 },
                 left: {
                     root: {
-
+                        flexDirection: 'row'
                     }
                 },
                 right: {
@@ -160,6 +162,15 @@ export default {
                     }
                 }
             }
+        }
+    },
+    bottomSection: {
+        root: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginTop: 10,
+            width: '100%',
+            height: 30,
         }
     }
 }

@@ -7,6 +7,11 @@ import MainStack from '@screens/MainStack';
 import Inbox from '@screens/Inbox/index';
 import Trash from '@screens/Trash/index';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './store/reducer';
+const store = createStore(reducer);
+
 const AppNavigator = createStackNavigator(
   {
     Welcome,
@@ -16,8 +21,18 @@ const AppNavigator = createStackNavigator(
     Trash
   },
   {
-    initialRouteName: "MainStack"
+    initialRouteName: "Welcome"
   }
 );
 
-export default createAppContainer(AppNavigator);
+let Navigation = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
+  }
+}

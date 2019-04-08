@@ -12,9 +12,12 @@
     "react-native": "0.58.4",
     "react-native-drawer-layout": "^2.0.0",
     "react-native-gesture-handler": "^1.0.15",
+    "react-native-sound-player": "^0.6.2",
     "react-native-splash-screen": "^3.2.0",
     "react-native-virtual-keyboard": "^1.0.9",
-    "react-navigation": "^3.2.1"
+    "react-navigation": "^3.2.1",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",
