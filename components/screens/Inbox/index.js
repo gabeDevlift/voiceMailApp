@@ -306,7 +306,7 @@ class Inbox extends React.Component {
                     <ScrollView>
                         <View style={styles.messages.root}>
                             {this.state.items.map((message, index) => (
-                                !message.trashed
+                                !message.trashed && !message.archived
                                 ?
                                 <View
                                     key={index}
