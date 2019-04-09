@@ -25,6 +25,7 @@ class Trash extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            filterBy: 0,
             menuItemsExpanded: new Array(data.dummyData).fill(false),
             items: []
         }
@@ -33,6 +34,36 @@ class Trash extends React.Component {
     componentDidMount() {
         this.setState({
             items: this.props.messages.messages
+        })
+    }
+
+    compareSenders(a, b) {
+        if (a.id < b.id)
+            return -1
+        else
+            return 1
+    }
+
+    compareDates(a, b) {
+        if (parseInt(a.date.substring(0, 2)) < parseInt(b.date.substring(0, 2)))
+            return -1
+        else
+            return 1
+    }
+
+    filterBySender() {
+        let temp = this.state.items
+        temp.sort(this.compareSenders)
+        this.setState({
+            items: temp
+        })
+    }
+
+    filterByDate() {
+        let temp = this.state.items
+        temp.sort(this.compareDates)
+        this.setState({
+            items: temp
         })
     }
 
@@ -57,8 +88,12 @@ class Trash extends React.Component {
                         Filter by:
                     </Text>
                     <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}
                         onPress={() => {
-                            this.filterByDate()
+                            this.filterBySender()
+                            this.setState({
+                                filterBy: 0
+                            })
                         }}
                     >
                         <Text style={{
@@ -69,10 +104,23 @@ class Trash extends React.Component {
                         }}>
                             Sender
                         </Text>
+                        {
+                            this.state.filterBy === 0
+                            ?
+                            <Image source={require('@images/checkmark.png')}
+                                style={styles.topHeading.right.filterImage}
+                            />
+                            :
+                            null
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}
                         onPress={() => {
                             this.filterByDate()
+                            this.setState({
+                                filterBy: 1
+                            })
                         }}
                     >
                         <Text style={{
@@ -82,6 +130,15 @@ class Trash extends React.Component {
                         }}>
                             Date
                         </Text>
+                        {
+                            this.state.filterBy === 1
+                            ?
+                            <Image source={require('@images/checkmark.png')}
+                                style={styles.topHeading.right.filterImage}
+                            />
+                            :
+                            null
+                        }
                     </TouchableOpacity>
                 </View>
                 )}
@@ -111,9 +168,6 @@ class Trash extends React.Component {
                             <Image source={require('@images/filter.png')}
                                 style={styles.topHeading.right.filterImage}
                             />
-                            <Text style={styles.topHeading.right.text}>
-                                Filter By:{"\n"}Most Recent
-                            </Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView>
@@ -136,9 +190,9 @@ class Trash extends React.Component {
                                             <Text>
                                             {message.date}
                                             </Text>
-                                            <Text>
+                                            {/* <Text>
                                             0:29
-                                            </Text>
+                                            </Text> */}
                                         </View>
                                         <TouchableOpacity
                                             onPress={() => {
@@ -173,16 +227,15 @@ class Trash extends React.Component {
                                                 <TouchableOpacity style={styles.messages.message.actions.innerView.delete.root}
                                                     onPress={() => {
                                                         Alert.alert(
-                                                            'Send message to Trash',
+                                                            'Delete Forever',
                                                             'Are you sure?',
                                                             [
                                                             {
                                                                 text: 'Yes',
-                                                                onPress: () => console.log('Ask me later pressed')},
+                                                                onPress: () => this.props.deleteForever(index)
+                                                            },
                                                             {
                                                                 text: 'Cancel',
-                                                                onPress: () => this.props.restore(index),
-                                                                style: 'cancel',
                                                             },
                                                             ],
                                                             {cancelable: false},

@@ -21,7 +21,7 @@ const AppNavigator = createStackNavigator(
     Trash
   },
   {
-    initialRouteName: "Welcome"
+    initialRouteName: "MainStack"
   }
 );
 
