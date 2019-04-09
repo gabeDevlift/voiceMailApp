@@ -16,7 +16,6 @@ import {
     markListened
 } from 'voiceMailApp/store/actions';
 import globalStyles from 'voiceMailApp/globalStyles';
-import { CheckBox } from 'react-native-elements';
 
 
 const data = cloneDeep(dataFile);
@@ -31,6 +30,7 @@ class Inbox extends React.Component {
         super(props);
         this.dashboardSettingsDrawer;
         this.state = {
+            filterBy: 0,
             indicatorPosition: 0,
             playing: [],
             indexPlaying: -1,
@@ -40,20 +40,79 @@ class Inbox extends React.Component {
         }
     }
 
-    playSong() {
+    async play(index, _this) {
+
         try {
-            console.log("trying")
-            SoundPlayer.playSoundFile('sample1', 'mp3')
+            this.props.markListened(index)
+            if (SoundPlayer)
+                SoundPlayer.stop()
+            _this.setState({
+                paused: false,
+                indexPlaying: index
+            })
+            _this.state.progress.setValue(0)
+            SoundPlayer.playSoundFile(_this.state.items[index].message.split('.')[0], 'mp3')
+            let info = await SoundPlayer.getInfo()
+            console.log("info: ", info)
             Animated.timing(
-                this.state.progress,
+                _this.state.progress,
                 {
                     toValue: 335,
-                    duration: 18000
+                    duration: info.duration*1000
                 }
             ).start()
         } catch (e) {
             alert('Cannot play the file')
             console.log('cannot play the song file', e)
+        }
+    }
+
+    pause(_this) {
+        console.log("pause: ", _this.state)
+        try {
+            _this.state.progress.stopAnimation()
+            _this.setState({
+                paused: true
+            })
+            SoundPlayer.pause()
+
+        } catch (e) {
+            console.log('cannot pause the song file', e)
+        }
+    }
+
+    async resume(_this) {
+        console.log("resume")
+        try {
+            _this.setState({
+                paused: false
+            })
+            let info = await SoundPlayer.getInfo()
+            Animated.timing(
+                _this.state.progress,
+                {
+                    toValue: 335,
+                    duration: info.duration*1000-info.currentTime*1000
+                }
+            ).start()
+            SoundPlayer.resume()
+        } catch (e) {
+            console.log('cannot resume the song file', e)
+        }
+    }
+
+    stop(index, _this) {
+        console.log("stop")
+        try {
+            SoundPlayer.stop()
+            _this.state.progress.stopAnimation()
+            _this.state.progress.setValue(0)
+            _this.setState({
+                paused: false,
+                indexPlaying: -1
+            })
+        } catch (e) {
+            console.log('cannot stop the song file', e)
         }
     }
 
@@ -78,6 +137,7 @@ class Inbox extends React.Component {
         let interval;
         // When new message starts playing
         SoundPlayer.onFinishedLoading(async (success: boolean) => {
+            console.log("hihi")
             const info = await SoundPlayer.getInfo()
             Animated.timing(
                 this.state.indicatorPosition,
@@ -110,12 +170,31 @@ class Inbox extends React.Component {
         
     }
 
+    compareSenders(a, b) {
+        if (a.id < b.id)
+            return -1
+        else
+            return 1
+    }
+
+    compareDates(a, b) {
+        if (parseInt(a.date.substring(0, 2)) < parseInt(b.date.substring(0, 2)))
+            return -1
+        else
+            return 1
+    }
+
     filterBySender() {
-        console.log("hello")
+        let temp = this.state.items
+        temp.sort(this.compareSenders)
+        this.setState({
+            items: temp
+        })
     }
 
     filterByDate() {
-        let temp = this.state.items.reverse()
+        let temp = this.state.items
+        temp.sort(this.compareDates)
         this.setState({
             items: temp
         })
@@ -142,8 +221,12 @@ class Inbox extends React.Component {
                         Filter by:
                     </Text>
                     <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}
                         onPress={() => {
-                            this.filterByDate()
+                            this.filterBySender()
+                            this.setState({
+                                filterBy: 0
+                            })
                         }}
                     >
                         <Text style={{
@@ -154,10 +237,23 @@ class Inbox extends React.Component {
                         }}>
                             Sender
                         </Text>
+                        {
+                            this.state.filterBy === 0
+                            ?
+                            <Image source={require('@images/checkmark.png')}
+                                style={styles.topHeading.right.filterImage}
+                            />
+                            :
+                            null
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity
+                        style={{flexDirection: 'row', alignItems: 'center'}}
                         onPress={() => {
                             this.filterByDate()
+                            this.setState({
+                                filterBy: 1
+                            })
                         }}
                     >
                         <Text style={{
@@ -167,6 +263,15 @@ class Inbox extends React.Component {
                         }}>
                             Date
                         </Text>
+                        {
+                            this.state.filterBy === 1
+                            ?
+                            <Image source={require('@images/checkmark.png')}
+                                style={styles.topHeading.right.filterImage}
+                            />
+                            :
+                            null
+                        }
                     </TouchableOpacity>
                 </View>
                 )}
@@ -196,9 +301,6 @@ class Inbox extends React.Component {
                             <Image source={require('@images/filter.png')}
                                 style={styles.topHeading.right.filterImage}
                             />
-                            <Text style={styles.topHeading.right.text}>
-                                Filter By:{"\n"}Most Recent
-                            </Text>
                         </TouchableOpacity>
                     </View>
                     <ScrollView>
@@ -241,19 +343,19 @@ class Inbox extends React.Component {
                                             height: 12,
                                             backgroundColor: 'black',
                                             borderRadius: 6,
-                                            zIndex: 1
+                                            zIndex: 1,
                                         }}/>
                                         <View style={styles.messages.message.audioPlayer.line}>
                                             
                                         </View>
-                                        <View style={styles.messages.message.audioPlayer.clock.root}>
+                                        {/* <View style={styles.messages.message.audioPlayer.clock.root}>
                                             <Text style={styles.messages.message.audioPlayer.clock.timeElapsed}>
                                                 {"0:10"}
                                             </Text>
                                             <Text style={styles.messages.message.audioPlayer.clock.timeLeft}>
                                                 {"1:10"}
                                             </Text>
-                                        </View>
+                                        </View> */}
                                         <View style={styles.messages.message.audioPlayer.playButton.root}>
                                             {
                                                 this.state.indexPlaying === index
@@ -263,12 +365,7 @@ class Inbox extends React.Component {
                                                         this.state.paused
                                                         ?
                                                         <TouchableOpacity
-                                                            onPress={async () => {
-                                                                this.setState({
-                                                                    paused: false
-                                                                })
-                                                                SoundPlayer.resume()
-                                                            }}
+                                                            onPress={() => this.resume(this)}
                                                         >
                                                             <Image
                                                                 source={require('@images/play-icon.png')}
@@ -277,13 +374,7 @@ class Inbox extends React.Component {
                                                         </TouchableOpacity>
                                                         :
                                                         <TouchableOpacity
-                                                            onPress={async () => {
-                                                                this.setState({
-                                                                    paused: true
-                                                                })
-                                                                SoundPlayer.pause()
-                                                                this.state.progress.stopAnimation()
-                                                            }}
+                                                            onPress={() => this.pause(this)}
                                                         >
                                                             <Image
                                                                 source={require('@images/pause.png')}
@@ -293,16 +384,7 @@ class Inbox extends React.Component {
 
                                                     }
                                                     <TouchableOpacity
-                                                        onPress={async () => {
-                                                            await this.setState({
-                                                                indexPlaying: -1,
-                                                                paused: false
-                                                            })
-                                                            SoundPlayer.stop()
-                                                            this.state.progress.stopAnimation()
-                                                            this.state.progress.setValue(0)
-
-                                                        }}
+                                                        onPress={() => this.stop(index, this)}
                                                     >
                                                         <Image
                                                             source={require('@images/stop.png')}
@@ -312,13 +394,7 @@ class Inbox extends React.Component {
                                                 </View>
                                                 :
                                                 <TouchableOpacity
-                                                    onPress={async () => {
-                                                        await this.setState({
-                                                            indexPlaying: index
-                                                        })
-                                                        this.props.markListened(index)
-                                                        this.playSong()
-                                                    }}
+                                                    onPress={() => this.play(index, this)}
                                                 >
                                                     <Image
                                                         source={require('@images/play-icon.png')}

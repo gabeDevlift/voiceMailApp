@@ -59,6 +59,18 @@ export default class EnterPassCode extends Component {
     render() {
         return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 220 }}>
+            {
+                this.state.incorrectPassword
+                ?
+                <Text style={{
+                    color: 'red',
+                    marginBottom: 15
+                }}>
+                    Incorrect password: please try again
+                </Text>
+                :
+                null
+            }
             {this.getAnimatedText()}
             <TextInput
             	ref={input => { this.passInput = input }}
@@ -80,7 +92,17 @@ export default class EnterPassCode extends Component {
       			title='Forgot password?'
       			onPress={() => this.forgotPass()}>
       		</Button><View style={{paddingTop: 30}}> 
-                <Button title="Continue" disabled={this.state.disabled} onPress={() => this.props.navigation.navigate('MainStack')}/>
+                <Button title="Continue" disabled={this.state.disabled} onPress={() => {
+                    this.state.text ===this.correct
+                    ?
+                    this.props.navigation.navigate('MainStack')
+                    :
+                    this.setState({
+                        incorrectPassword: true
+                    })
+                }
+                    }
+                />
             </View>
         </View>
         );

@@ -132,7 +132,7 @@ export default {
                 },
                 line: {
                     marginTop: 15,
-                    marginBottom: 5,
+                    marginBottom: 10,
                     borderBottomWidth: 3,
                     borderBottomColor: globalStyles.grey
                 },
