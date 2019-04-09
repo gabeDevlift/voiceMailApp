@@ -1,0 +1,5 @@
+- Please run on a Mac with XCode version >= 9 installed
+- Please download attached zip file voicemailAppDemo.zip, OR pull from master at https://github.com/gabeDevlift/voiceMailApp.git
+- Please run 'npm i' in root of project, then 'react-native-run-ios'
+- Phone number to use for login in app is 4169381605 and password is 123456
+- Please contact me at gkeenley@uwo.ca if there are problems with running the prototype
